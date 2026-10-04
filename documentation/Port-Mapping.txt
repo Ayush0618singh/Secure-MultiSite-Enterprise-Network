@@ -1,0 +1,97 @@
+SECURE MULTI-SITE ENTERPRISE NETWORK
+ACTUAL PORT MAPPING
+====================================
+
+ROUTERS / WAN
+-------------
+
+HQ-R1 GigabitEthernet0/0
+<-->
+HQ-SW1 FastEthernet0/1
+
+HQ-R1 GigabitEthernet0/1
+<-->
+ISP-R1 GigabitEthernet0/0
+
+BR-R1 GigabitEthernet0/0
+<-->
+BR-SW1 FastEthernet0/1
+
+BR-R1 GigabitEthernet0/1
+<-->
+ISP-R1 GigabitEthernet0/2
+
+ISP-R1 GigabitEthernet0/1
+<-->
+PUBLIC-SRV1 FastEthernet0
+
+
+HQ-SW1
+------
+
+Fa0/1 -> HQ-R1
+
+Fa0/2 -> HQ-SW2 Fa0/1
+Fa0/3 -> HQ-SW2 Fa0/2
+
+Fa0/4 -> HQ-SW3 Fa0/1
+Fa0/5 -> HQ-SW3 Fa0/2
+
+
+HQ-SW2
+------
+
+Fa0/1 -> HQ-SW1 Fa0/2
+Fa0/2 -> HQ-SW1 Fa0/3
+
+Fa0/3 -> HQ-SW3 Fa0/5
+
+Fa0/4 -> HQ-HR-PC1
+Fa0/5 -> HQ-HR-PC2
+Fa0/6 -> HQ-FIN-PC1
+
+
+HQ-SW3
+------
+
+Fa0/1 -> HQ-SW1 Fa0/4
+Fa0/2 -> HQ-SW1 Fa0/5
+
+Fa0/5 -> HQ-SW2 Fa0/3
+
+Fa0/3 -> HQ-DEV-PC1
+Fa0/4 -> HQ-IT-PC1
+Fa0/6 -> HQ-SRV1
+
+
+BR-SW1
+------
+
+Fa0/1 -> BR-R1
+Fa0/2 -> BR-SALES-PC1
+Fa0/3 -> BR-SALES-PC2
+Fa0/4 -> BR-IT-PC1
+
+
+ETHERCHANNEL 1
+--------------
+
+HQ-SW1 Fa0/2 + Fa0/3
+<-->
+HQ-SW2 Fa0/1 + Fa0/2
+
+
+ETHERCHANNEL 2
+--------------
+
+HQ-SW1 Fa0/4 + Fa0/5
+<-->
+HQ-SW3 Fa0/1 + Fa0/2
+
+
+STP REDUNDANT TRUNK
+-------------------
+
+HQ-SW2 Fa0/3
+<-->
+HQ-SW3 Fa0/5

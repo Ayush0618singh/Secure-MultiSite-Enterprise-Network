@@ -1,0 +1,274 @@
+SITE-TO-SITE IPSEC VPN DESIGN PLAN
+==================================
+
+PROJECT:
+Secure Multi-Site Enterprise Network Design & Simulation
+
+
+1. PURPOSE
+==========
+
+The purpose of this design is to provide secure Site-to-Site communication
+between selected Head Office and Branch Office networks using IPsec.
+
+The VPN is designed to protect traffic between the HQ HR network and the
+Branch Sales network while the traffic crosses the simulated ISP network.
+
+
+2. VPN ENDPOINTS
+================
+
+HEAD OFFICE VPN ROUTER
+----------------------
+
+Device:
+HQ-R1
+
+WAN IP:
+203.0.113.2
+
+Protected Network:
+10.10.10.0/26
+
+VLAN:
+VLAN 10 - HR
+
+
+BRANCH OFFICE VPN ROUTER
+------------------------
+
+Device:
+BR-R1
+
+WAN IP:
+198.51.100.2
+
+Protected Network:
+10.20.50.0/26
+
+VLAN:
+VLAN 50 - SALES
+
+
+3. VPN TYPE
+===========
+
+Site-to-Site IPsec VPN
+
+
+4. VPN TRAFFIC FLOW
+===================
+
+HQ HR NETWORK
+10.10.10.0/26
+
+        |
+        |
+      HQ-R1
+  203.0.113.2
+        |
+        |
+   IPSEC TUNNEL
+        |
+        |
+      BR-R1
+ 198.51.100.2
+        |
+        |
+
+BRANCH SALES NETWORK
+10.20.50.0/26
+
+
+5. IKE / ISAKMP PHASE 1 DESIGN
+==============================
+
+IKE Policy:
+10
+
+Encryption:
+AES
+
+Hash / Integrity:
+SHA
+
+Authentication:
+Pre-Shared Key
+
+Diffie-Hellman Group:
+2
+
+Purpose:
+Establish a secure authenticated relationship between HQ-R1 and BR-R1
+before IPsec-protected data traffic is exchanged.
+
+
+6. IPSEC PHASE 2 DESIGN
+=======================
+
+Transform Set:
+ENTERPRISE-SET
+
+Encryption:
+ESP-AES
+
+Integrity:
+ESP-SHA-HMAC
+
+Purpose:
+Define how protected enterprise traffic would be encrypted and authenticated.
+
+
+7. INTERESTING TRAFFIC
+======================
+
+HQ TO BRANCH
+------------
+
+Source:
+10.10.10.0/26
+
+Destination:
+10.20.50.0/26
+
+
+BRANCH TO HQ
+------------
+
+Source:
+10.20.50.0/26
+
+Destination:
+10.10.10.0/26
+
+
+Only traffic matching the protected-network policy is intended to be
+processed by the Site-to-Site IPsec VPN.
+
+
+8. CRYPTO MAP DESIGN
+====================
+
+Crypto Map Name:
+ENTERPRISE-VPN
+
+Sequence Number:
+10
+
+HQ Peer:
+198.51.100.2
+
+Branch Peer:
+203.0.113.2
+
+The crypto map would bind together:
+
+- Remote VPN peer
+- IPsec transform set
+- Interesting-traffic ACL
+- WAN interface
+
+
+9. INTENDED VPN VERIFICATION
+============================
+
+If the simulated IOS supported the required crypto features, verification
+would include:
+
+HQ-HR-PC1 <-> BR-SALES-PC1 connectivity
+
+IKE / ISAKMP Security Association:
+Established
+
+IPsec Security Association:
+Established
+
+Expected IPsec counters:
+
+- Packets encapsulated
+- Packets encrypted
+- Packets decapsulated
+- Packets decrypted
+
+The counters would increase when protected traffic crossed the tunnel.
+
+
+10. INTENDED VERIFICATION COMMANDS
+==================================
+
+show crypto isakmp policy
+
+show crypto isakmp sa
+
+show crypto ipsec sa
+
+show crypto map
+
+show access-lists 120
+
+
+11. PACKET TRACER IMPLEMENTATION LIMITATION
+===========================================
+
+The Site-to-Site IPsec VPN architecture and configuration were designed
+for secure Head Office and Branch Office communication.
+
+During implementation, the Cisco Packet Tracer 2911 IOS image reported
+the SecurityK9 technology package as available but not enabled.
+
+The IKE / ISAKMP and IPsec commands required for the operational tunnel
+were therefore unavailable in the simulated router environment.
+
+Attempts were made to activate the SecurityK9 technology package and
+reload the router, but the feature remained disabled.
+
+
+12. PROJECT STATUS
+==================
+
+VPN Architecture:
+COMPLETED
+
+VPN Addressing Design:
+COMPLETED
+
+Protected Networks:
+DEFINED
+
+IKE / ISAKMP Design:
+COMPLETED
+
+IPsec Transform Design:
+COMPLETED
+
+Crypto Map Design:
+COMPLETED
+
+Operational Packet Tracer VPN Tunnel:
+NOT IMPLEMENTED DUE TO SIMULATOR / IOS FEATURE LIMITATION
+
+
+13. IMPORTANT PROJECT NOTE
+==========================
+
+The project does not claim that a working IPsec tunnel was established.
+
+The VPN component is retained as a documented enterprise-security design.
+
+All other implemented networking features, including VLANs, trunking,
+inter-VLAN routing, EtherChannel, STP, DHCP, DNS, OSPF, NAT/PAT,
+ACL security, multi-site connectivity, and server communication were
+implemented and tested successfully.
+
+
+14. FUTURE IMPLEMENTATION
+=========================
+
+The same VPN design can be implemented and validated using an environment
+that provides full IKE/IPsec support, such as:
+
+- Supported Cisco IOS / IOSv environment
+- GNS3
+- EVE-NG
+- Cisco CML
+- Physical Cisco ISR hardware

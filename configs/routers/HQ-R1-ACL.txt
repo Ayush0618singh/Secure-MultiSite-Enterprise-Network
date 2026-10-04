@@ -1,0 +1,38 @@
+enable
+configure terminal
+
+!
+! =====================================================
+! HQ-R1 EXTENDED ACL SECURITY CONFIGURATION
+! =====================================================
+!
+
+!
+! REMOVE PREVIOUS ACL 110 IF IT EXISTS
+!
+
+no access-list 110
+
+!
+! BLOCK BRANCH SALES FROM HQ FINANCE
+!
+
+access-list 110 deny ip 10.20.50.0 0.0.0.63 10.10.20.0 0.0.0.63
+
+!
+! ALLOW ALL OTHER TRAFFIC
+!
+
+access-list 110 permit ip any any
+
+!
+! APPLY ACL TOWARD FINANCE VLAN
+!
+
+interface GigabitEthernet0/0.20
+ description FINANCE_GATEWAY_WITH_SECURITY_ACL
+ ip access-group 110 out
+exit
+
+end
+write memory

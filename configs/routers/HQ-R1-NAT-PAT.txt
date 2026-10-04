@@ -1,0 +1,23 @@
+enable
+configure terminal
+
+!
+! HQ NAT/PAT CONFIGURATION
+!
+
+access-list 1 permit 10.10.30.0 0.0.0.127
+
+interface GigabitEthernet0/0.30
+ description DEVELOPMENT_GATEWAY_NAT_INSIDE
+ ip nat inside
+exit
+
+interface GigabitEthernet0/1
+ description WAN_TO_ISP-R1_NAT_OUTSIDE
+ ip nat outside
+exit
+
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+
+end
+write memory

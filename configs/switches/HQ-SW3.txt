@@ -1,0 +1,178 @@
+enable
+configure terminal
+
+hostname HQ-SW3
+
+no ip domain-lookup
+service password-encryption
+enable secret <ENABLE_SECRET>
+
+banner motd # AUTHORIZED NETWORK ADMINISTRATION ONLY #
+
+!
+! VLAN DATABASE
+!
+
+vlan 10
+ name HR
+exit
+
+vlan 20
+ name FINANCE
+exit
+
+vlan 30
+ name DEVELOPMENT
+exit
+
+vlan 40
+ name IT
+exit
+
+vlan 99
+ name MANAGEMENT
+exit
+
+vlan 100
+ name SERVERS
+exit
+
+vlan 999
+ name UNUSED_NATIVE
+exit
+
+!
+! ETHERCHANNEL 2 TO HQ-SW1
+!
+
+interface range FastEthernet0/1 - 2
+ description LACP_TO_HQ-SW1
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,99,100,999
+ channel-group 2 mode active
+ no shutdown
+exit
+
+interface Port-channel2
+ description ETHERCHANNEL_TO_HQ-SW1
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,99,100,999
+ no shutdown
+exit
+
+!
+! DEVELOPMENT USER
+!
+
+interface FastEthernet0/3
+ description HQ-DEV-PC1
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+exit
+
+!
+! IT USER
+!
+
+interface FastEthernet0/4
+ description HQ-IT-PC1
+ switchport mode access
+ switchport access vlan 40
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+exit
+
+!
+! REDUNDANT STP TRUNK TO HQ-SW2
+!
+
+interface FastEthernet0/5
+ description REDUNDANT_TRUNK_TO_HQ-SW2
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,99,100,999
+ no shutdown
+exit
+
+!
+! INTERNAL SERVER
+!
+
+interface FastEthernet0/6
+ description HQ-SRV1
+ switchport mode access
+ switchport access vlan 100
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ no shutdown
+exit
+
+!
+! MANAGEMENT INTERFACE
+!
+
+interface Vlan99
+ description HQ-SW3_MANAGEMENT
+ ip address 10.10.99.4 255.255.255.240
+ no shutdown
+exit
+
+ip default-gateway 10.10.99.1
+
+!
+! SPANNING TREE
+!
+
+spanning-tree mode pvst
+
+!
+! UNUSED PORT SECURITY
+!
+
+interface range FastEthernet0/7 - 24
+ description UNUSED_PORT
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit
+
+interface range GigabitEthernet0/1 - 2
+ description UNUSED_PORT
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+exit
+
+!
+! LOCAL ADMIN ACCOUNT
+!
+
+username netadmin privilege 15 secret <LAB_ADMIN_SECRET>
+
+!
+! SSH MANAGEMENT
+!
+
+ip domain-name enterprise.local
+crypto key generate rsa modulus 1024
+ip ssh version 2
+
+line console 0
+ login local
+ exec-timeout 10 0
+exit
+
+line vty 0 15
+ login local
+ transport input ssh
+ exec-timeout 10 0
+exit
+
+end
+write memory

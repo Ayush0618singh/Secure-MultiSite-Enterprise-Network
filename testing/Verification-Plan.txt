@@ -1,0 +1,57 @@
+NETWORK VERIFICATION PLAN
+=========================
+
+ROUTER TESTS
+------------
+
+show ip interface brief
+show ip route
+show ip protocols
+show ip ospf neighbor
+show access-lists
+show ip nat translations
+show ip nat statistics
+show crypto isakmp sa
+show crypto ipsec sa
+
+
+SWITCH TESTS
+------------
+
+show vlan brief
+show interfaces trunk
+show spanning-tree
+show etherchannel summary
+show interfaces port-channel
+show mac address-table
+show ip interface brief
+
+
+PC TESTS
+--------
+
+ipconfig
+ping <gateway>
+ping <same-vlan-host>
+ping <different-vlan-host>
+ping <branch-host>
+ping <public-server>
+tracert <destination>
+nslookup <hostname>
+
+
+EXPECTED FINAL RESULT
+---------------------
+
+1. All DHCP clients receive valid IP configuration.
+2. Devices communicate within their VLAN.
+3. Allowed VLANs communicate through inter-VLAN routing.
+4. Restricted traffic is blocked by ACLs.
+5. HQ and Branch networks are dynamically reachable.
+6. OSPF neighbor relationships are established.
+7. Internet/public network traffic uses NAT/PAT.
+8. HQ-to-Branch protected traffic uses the VPN.
+9. DNS name resolution works.
+10. STP prevents Layer-2 loops.
+11. EtherChannel operates successfully.
+12. Public web server is reachable by permitted clients.

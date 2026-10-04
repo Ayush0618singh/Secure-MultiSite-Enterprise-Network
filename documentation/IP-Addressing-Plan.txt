@@ -1,0 +1,116 @@
+PROJECT IP ADDRESSING PLAN
+==========================
+
+HEAD OFFICE
+===========
+
+VLAN 10 - HR
+Network: 10.10.10.0/26
+Subnet Mask: 255.255.255.192
+Gateway: 10.10.10.1
+Usable Range: 10.10.10.1 - 10.10.10.62
+Broadcast: 10.10.10.63
+DHCP Range: 10.10.10.10 - 10.10.10.62
+
+VLAN 20 - FINANCE
+Network: 10.10.20.0/26
+Subnet Mask: 255.255.255.192
+Gateway: 10.10.20.1
+Usable Range: 10.10.20.1 - 10.10.20.62
+Broadcast: 10.10.20.63
+DHCP Range: 10.10.20.10 - 10.10.20.62
+
+VLAN 30 - DEVELOPMENT
+Network: 10.10.30.0/25
+Subnet Mask: 255.255.255.128
+Gateway: 10.10.30.1
+Usable Range: 10.10.30.1 - 10.10.30.126
+Broadcast: 10.10.30.127
+DHCP Range: 10.10.30.10 - 10.10.30.126
+
+VLAN 40 - IT
+Network: 10.10.40.0/27
+Subnet Mask: 255.255.255.224
+Gateway: 10.10.40.1
+Usable Range: 10.10.40.1 - 10.10.40.30
+Broadcast: 10.10.40.31
+DHCP Range: 10.10.40.10 - 10.10.40.30
+
+VLAN 99 - HQ MANAGEMENT
+Network: 10.10.99.0/28
+Subnet Mask: 255.255.255.240
+Gateway: 10.10.99.1
+HQ-SW1: 10.10.99.2
+HQ-SW2: 10.10.99.3
+HQ-SW3: 10.10.99.4
+
+VLAN 100 - SERVERS
+Network: 10.10.100.0/28
+Subnet Mask: 255.255.255.240
+Gateway: 10.10.100.1
+HQ-SRV1: 10.10.100.10
+
+
+BRANCH OFFICE
+=============
+
+VLAN 50 - SALES
+Network: 10.20.50.0/26
+Subnet Mask: 255.255.255.192
+Gateway: 10.20.50.1
+Usable Range: 10.20.50.1 - 10.20.50.62
+Broadcast: 10.20.50.63
+DHCP Range: 10.20.50.10 - 10.20.50.62
+
+VLAN 60 - BRANCH IT
+Network: 10.20.60.0/27
+Subnet Mask: 255.255.255.224
+Gateway: 10.20.60.1
+Usable Range: 10.20.60.1 - 10.20.60.30
+Broadcast: 10.20.60.31
+DHCP Range: 10.20.60.10 - 10.20.60.30
+
+VLAN 99 - BRANCH MANAGEMENT
+Network: 10.20.99.0/28
+Subnet Mask: 255.255.255.240
+Gateway: 10.20.99.1
+BR-SW1: 10.20.99.2
+
+
+WAN NETWORKS
+============
+
+HQ-R1 <-> ISP-R1
+Network: 203.0.113.0/30
+Subnet Mask: 255.255.255.252
+
+ISP-R1 G0/0: 203.0.113.1
+HQ-R1 G0/1: 203.0.113.2
+Broadcast: 203.0.113.3
+
+
+BR-R1 <-> ISP-R1
+Network: 198.51.100.0/30
+Subnet Mask: 255.255.255.252
+
+ISP-R1 G0/1: 198.51.100.1
+BR-R1 G0/1: 198.51.100.2
+Broadcast: 198.51.100.3
+
+
+PUBLIC NETWORK
+==============
+
+Network: 192.0.2.0/24
+Subnet Mask: 255.255.255.0
+
+ISP-R1 G0/2: 192.0.2.1
+PUBLIC-SRV1: 192.0.2.10
+PUBLIC-SRV1 Gateway: 192.0.2.1
+
+
+DNS
+===
+
+Primary DNS Server:
+10.10.100.10

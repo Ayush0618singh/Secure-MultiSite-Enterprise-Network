@@ -1,0 +1,58 @@
+NAT / PAT IMPLEMENTATION PLAN
+=============================
+
+PROJECT:
+Secure Multi-Site Enterprise Network Design & Simulation
+
+
+HQ NAT/PAT
+==========
+
+Inside Network:
+VLAN 30 - DEVELOPMENT
+
+Private Network:
+10.10.30.0/25
+
+Inside Interface:
+HQ-R1 GigabitEthernet0/0.30
+
+Outside Interface:
+HQ-R1 GigabitEthernet0/1
+
+Public / Global Address:
+203.0.113.2
+
+Method:
+PAT (NAT Overload)
+
+
+BRANCH NAT/PAT
+==============
+
+Inside Network:
+VLAN 60 - BRANCH IT
+
+Private Network:
+10.20.60.0/27
+
+Inside Interface:
+BR-R1 GigabitEthernet0/0.60
+
+Outside Interface:
+BR-R1 GigabitEthernet0/1
+
+Public / Global Address:
+198.51.100.2
+
+Method:
+PAT (NAT Overload)
+
+
+DESIGN NOTE
+===========
+
+Development and Branch-IT VLANs are used to demonstrate NAT/PAT.
+
+HQ HR VLAN 10 and Branch SALES VLAN 50 remain untranslated so that
+they can later be used to demonstrate Site-to-Site IPsec VPN traffic.

@@ -1,0 +1,75 @@
+ACCESS CONTROL LIST SECURITY POLICY
+===================================
+
+PROJECT:
+Secure Multi-Site Enterprise Network Design & Simulation
+
+
+SECURITY REQUIREMENT
+====================
+
+Branch Sales users must not be allowed to access
+the Head Office Finance network.
+
+Branch Sales Network:
+10.20.50.0/26
+
+HQ Finance Network:
+10.10.20.0/26
+
+
+POLICY
+======
+
+DENY:
+Branch Sales -> HQ Finance
+
+Source:
+10.20.50.0/26
+
+Destination:
+10.10.20.0/26
+
+
+ALLOW:
+All other legitimate traffic.
+
+
+ACL TYPE
+========
+
+Extended IPv4 Access Control List
+
+ACL Number:
+110
+
+
+ACL PLACEMENT
+=============
+
+Router:
+HQ-R1
+
+Interface:
+GigabitEthernet0/0.20
+
+Direction:
+OUT
+
+
+EXPECTED RESULT
+===============
+
+BR-SALES-PC1 -> HQ-FIN-PC1
+BLOCKED
+
+BR-SALES-PC1 -> HQ-HR-PC1
+ALLOWED
+
+BR-SALES-PC1 -> HQ-SRV1
+ALLOWED
+
+HQ-HR-PC1 -> HQ-FIN-PC1
+ALLOWED
+
+DNS and HTTP services remain accessible.

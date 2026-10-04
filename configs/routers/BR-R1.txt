@@ -1,0 +1,144 @@
+enable
+configure terminal
+
+hostname BR-R1
+
+no ip domain-lookup
+service password-encryption
+enable secret <ENABLE_SECRET>
+
+banner motd # AUTHORIZED NETWORK ADMINISTRATION ONLY #
+
+!
+! LOCAL ADMIN ACCOUNT
+!
+
+username netadmin privilege 15 secret <LAB_ADMIN_SECRET>
+
+!
+! SSH MANAGEMENT
+!
+
+ip domain-name enterprise.local
+crypto key generate rsa modulus 1024
+ip ssh version 2
+
+line console 0
+ login local
+ exec-timeout 10 0
+exit
+
+line vty 0 4
+ login local
+ transport input ssh
+ exec-timeout 10 0
+exit
+
+!
+! PHYSICAL LAN INTERFACE TO BRANCH SWITCH
+!
+
+interface GigabitEthernet0/0
+ description TRUNK_TO_BR-SW1
+ no ip address
+ no shutdown
+exit
+
+!
+! VLAN 50 - SALES
+!
+
+interface GigabitEthernet0/0.50
+ description SALES_GATEWAY
+ encapsulation dot1Q 50
+ ip address 10.20.50.1 255.255.255.192
+exit
+
+!
+! VLAN 60 - BRANCH IT
+!
+
+interface GigabitEthernet0/0.60
+ description BRANCH_IT_GATEWAY
+ encapsulation dot1Q 60
+ ip address 10.20.60.1 255.255.255.224
+exit
+
+!
+! VLAN 99 - MANAGEMENT
+!
+
+interface GigabitEthernet0/0.99
+ description BRANCH_MANAGEMENT_GATEWAY
+ encapsulation dot1Q 99
+ ip address 10.20.99.1 255.255.255.240
+exit
+
+!
+! VLAN 999 - NATIVE VLAN
+!
+
+interface GigabitEthernet0/0.999
+ description NATIVE_VLAN
+ encapsulation dot1Q 999 native
+ no ip address
+exit
+
+!
+! WAN LINK TO ISP
+!
+
+interface GigabitEthernet0/1
+ description WAN_TO_ISP-R1
+ ip address 198.51.100.2 255.255.255.252
+ no shutdown
+exit
+
+!
+! DHCP EXCLUSIONS
+!
+
+ip dhcp excluded-address 10.20.50.1 10.20.50.9
+ip dhcp excluded-address 10.20.60.1 10.20.60.9
+
+!
+! DHCP - SALES
+!
+
+ip dhcp pool BR-SALES
+ network 10.20.50.0 255.255.255.192
+ default-router 10.20.50.1
+ dns-server 10.10.100.10
+ domain-name enterprise.local
+exit
+
+!
+! DHCP - BRANCH IT
+!
+
+ip dhcp pool BR-IT
+ network 10.20.60.0 255.255.255.224
+ default-router 10.20.60.1
+ dns-server 10.10.100.10
+ domain-name enterprise.local
+exit
+
+!
+! OSPF DYNAMIC ROUTING
+!
+
+router ospf 10
+ router-id 3.3.3.3
+
+ network 10.20.50.0 0.0.0.63 area 0
+ network 10.20.60.0 0.0.0.31 area 0
+ network 10.20.99.0 0.0.0.15 area 0
+ network 198.51.100.0 0.0.0.3 area 0
+
+ passive-interface GigabitEthernet0/0.50
+ passive-interface GigabitEthernet0/0.60
+ passive-interface GigabitEthernet0/0.99
+exit
+
+end
+write memory

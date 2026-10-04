@@ -1,0 +1,66 @@
+VLAN PLAN
+=========
+
+HEAD OFFICE
+-----------
+
+VLAN 10
+Name: HR
+Network: 10.10.10.0/26
+Gateway: 10.10.10.1
+
+VLAN 20
+Name: FINANCE
+Network: 10.10.20.0/26
+Gateway: 10.10.20.1
+
+VLAN 30
+Name: DEVELOPMENT
+Network: 10.10.30.0/25
+Gateway: 10.10.30.1
+
+VLAN 40
+Name: IT
+Network: 10.10.40.0/27
+Gateway: 10.10.40.1
+
+VLAN 99
+Name: MANAGEMENT
+Network: 10.10.99.0/28
+Gateway: 10.10.99.1
+
+VLAN 100
+Name: SERVERS
+Network: 10.10.100.0/28
+Gateway: 10.10.100.1
+
+VLAN 999
+Name: UNUSED_NATIVE
+Purpose:
+- Unused switch ports
+- Native VLAN for trunks where required
+
+
+BRANCH OFFICE
+-------------
+
+VLAN 50
+Name: SALES
+Network: 10.20.50.0/26
+Gateway: 10.20.50.1
+
+VLAN 60
+Name: BRANCH_IT
+Network: 10.20.60.0/27
+Gateway: 10.20.60.1
+
+VLAN 99
+Name: MANAGEMENT
+Network: 10.20.99.0/28
+Gateway: 10.20.99.1
+
+VLAN 999
+Name: UNUSED_NATIVE
+Purpose:
+- Unused switch ports
+- Native VLAN

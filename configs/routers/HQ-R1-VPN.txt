@@ -1,0 +1,94 @@
+! ============================================================
+! HQ-R1 SITE-TO-SITE IPSEC VPN - DESIGN REFERENCE
+! ============================================================
+!
+! PROJECT:
+! Secure Multi-Site Enterprise Network Design & Simulation
+!
+! STATUS:
+! DESIGN ONLY
+!
+! NOTE:
+! The Packet Tracer 2911 IOS image used in this project did
+! not enable the SecurityK9 package required for IKE/IPsec.
+! This configuration is retained as a design reference and
+! was NOT operationally validated in the current simulation.
+!
+! HQ Protected Network:
+! 10.10.10.0/26
+!
+! Branch Protected Network:
+! 10.20.50.0/26
+!
+! HQ WAN:
+! 203.0.113.2
+!
+! Branch WAN:
+! 198.51.100.2
+! ============================================================
+
+enable
+configure terminal
+
+!
+! IKE / ISAKMP PHASE 1
+!
+
+crypto isakmp policy 10
+ encr aes
+ hash sha
+ authentication pre-share
+ group 2
+exit
+
+!
+! PRE-SHARED KEY
+!
+
+crypto isakmp key <PRE_SHARED_KEY> address 198.51.100.2
+
+!
+! INTERESTING TRAFFIC
+!
+
+access-list 120 permit ip 10.10.10.0 0.0.0.63 10.20.50.0 0.0.0.63
+
+!
+! IPSEC TRANSFORM SET
+!
+
+crypto ipsec transform-set ENTERPRISE-SET esp-aes esp-sha-hmac
+exit
+
+!
+! CRYPTO MAP
+!
+
+crypto map ENTERPRISE-VPN 10 ipsec-isakmp
+ set peer 198.51.100.2
+ set transform-set ENTERPRISE-SET
+ match address 120
+exit
+
+!
+! APPLY CRYPTO MAP TO WAN INTERFACE
+!
+
+interface GigabitEthernet0/1
+ description WAN_TO_ISP-R1_IPSEC_DESIGN
+ crypto map ENTERPRISE-VPN
+exit
+
+end
+write memory
+
+!
+! DESIGN VERIFICATION COMMANDS
+!
+! show crypto isakmp policy
+! show crypto isakmp sa
+! show crypto ipsec sa
+! show crypto map
+! show access-lists 120
+!
+! END OF DESIGN REFERENCE

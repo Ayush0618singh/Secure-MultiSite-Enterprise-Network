@@ -1,0 +1,23 @@
+enable
+configure terminal
+
+!
+! BRANCH NAT/PAT CONFIGURATION
+!
+
+access-list 2 permit 10.20.60.0 0.0.0.31
+
+interface GigabitEthernet0/0.60
+ description BRANCH_IT_GATEWAY_NAT_INSIDE
+ ip nat inside
+exit
+
+interface GigabitEthernet0/1
+ description WAN_TO_ISP-R1_NAT_OUTSIDE
+ ip nat outside
+exit
+
+ip nat inside source list 2 interface GigabitEthernet0/1 overload
+
+end
+write memory

@@ -1,0 +1,112 @@
+SECURE MULTI-SITE ENTERPRISE NETWORK
+PHYSICAL CABLING PLAN
+====================================
+
+A. ROUTER AND ISP CONNECTIONS
+-----------------------------
+
+1. HQ-R1 GigabitEthernet0/0
+   <-->
+   HQ-SW1 GigabitEthernet0/1
+
+2. HQ-R1 GigabitEthernet0/1
+   <-->
+   ISP-R1 GigabitEthernet0/0
+
+3. BR-R1 GigabitEthernet0/0
+   <-->
+   BR-SW1 GigabitEthernet0/1
+
+4. BR-R1 GigabitEthernet0/1
+   <-->
+   ISP-R1 GigabitEthernet0/1
+
+5. ISP-R1 GigabitEthernet0/2
+   <-->
+   PUBLIC-SRV1 FastEthernet0
+
+
+B. HEAD OFFICE SWITCH REDUNDANCY
+--------------------------------
+
+ETHERCHANNEL 1
+HQ-SW1 FastEthernet0/21
+<-->
+HQ-SW2 FastEthernet0/21
+
+HQ-SW1 FastEthernet0/22
+<-->
+HQ-SW2 FastEthernet0/22
+
+
+ETHERCHANNEL 2
+HQ-SW1 FastEthernet0/23
+<-->
+HQ-SW3 FastEthernet0/23
+
+HQ-SW1 FastEthernet0/24
+<-->
+HQ-SW3 FastEthernet0/24
+
+
+STP REDUNDANT TRUNK
+HQ-SW2 FastEthernet0/20
+<-->
+HQ-SW3 FastEthernet0/20
+
+
+C. HEAD OFFICE END DEVICES
+--------------------------
+
+HQ-SW2 FastEthernet0/1
+<-->
+HQ-HR-PC1 FastEthernet0
+
+HQ-SW2 FastEthernet0/2
+<-->
+HQ-HR-PC2 FastEthernet0
+
+HQ-SW2 FastEthernet0/3
+<-->
+HQ-FIN-PC1 FastEthernet0
+
+
+HQ-SW3 FastEthernet0/1
+<-->
+HQ-DEV-PC1 FastEthernet0
+
+HQ-SW3 FastEthernet0/2
+<-->
+HQ-IT-PC1 FastEthernet0
+
+HQ-SW3 FastEthernet0/3
+<-->
+HQ-SRV1 FastEthernet0
+
+
+D. BRANCH OFFICE END DEVICES
+----------------------------
+
+BR-SW1 FastEthernet0/1
+<-->
+BR-SALES-PC1 FastEthernet0
+
+BR-SW1 FastEthernet0/2
+<-->
+BR-SALES-PC2 FastEthernet0
+
+BR-SW1 FastEthernet0/3
+<-->
+BR-IT-PC1 FastEthernet0
+
+
+TOTAL PHYSICAL CONNECTIONS
+--------------------------
+
+Router / ISP Links:           5
+HQ EtherChannel Links:        4
+HQ STP Redundant Link:        1
+HQ End Device Links:          6
+Branch End Device Links:      3
+
+TOTAL LINKS:                 19

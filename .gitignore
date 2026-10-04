@@ -1,0 +1,20 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.log
+
+# Packet Tracer temporary/backup files
+*.pkt~
+*.pka~
+
+# Miscellaneous
+~$*

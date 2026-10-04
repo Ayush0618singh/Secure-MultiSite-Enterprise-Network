@@ -1,0 +1,139 @@
+PROJECT: Secure Multi-Site Enterprise Network Design & Simulation
+
+1. PROJECT OBJECTIVE
+Design and implement a secure multi-site enterprise network connecting a Head Office and a Branch Office through an ISP network.
+
+The project demonstrates:
+- Structured IPv4 addressing and subnetting
+- VLAN segmentation
+- 802.1Q trunking
+- Inter-VLAN routing
+- Static and dynamic routing
+- OSPF
+- DHCP
+- DNS
+- NAT/PAT
+- Access Control Lists (ACLs)
+- Spanning Tree Protocol (STP)
+- EtherChannel
+- Site-to-Site VPN
+- Network monitoring and troubleshooting
+- Secure network device management
+- Internet/public-server connectivity
+
+2. NETWORK SITES
+
+HEAD OFFICE
+- HQ-R1: Cisco 2911 Router
+- HQ-SW1: Cisco 2960 Switch
+- HQ-SW2: Cisco 2960 Switch
+- HQ-SW3: Cisco 2960 Switch
+- HQ-SRV1: Server
+- HQ-HR-PC1
+- HQ-HR-PC2
+- HQ-FIN-PC1
+- HQ-DEV-PC1
+- HQ-IT-PC1
+
+BRANCH OFFICE
+- BR-R1: Cisco 2911 Router
+- BR-SW1: Cisco 2960 Switch
+- BR-SALES-PC1
+- BR-SALES-PC2
+- BR-IT-PC1
+
+ISP / PUBLIC NETWORK
+- ISP-R1: Cisco 2911 Router
+- PUBLIC-SRV1: Public Web Server
+
+3. LOGICAL ARCHITECTURE
+
+                        PUBLIC-SRV1
+                             |
+                          ISP-R1
+                         /      \
+                        /        \
+                    HQ-R1        BR-R1
+                      |            |
+                   HQ-SW1       BR-SW1
+                  /     \
+            HQ-SW2 ===== HQ-SW3
+                 EtherChannel/
+                 STP Redundancy
+
+4. HEAD OFFICE VLAN DESIGN
+
+VLAN 10  - HR
+VLAN 20  - FINANCE
+VLAN 30  - DEVELOPMENT
+VLAN 40  - IT
+VLAN 99  - MANAGEMENT
+VLAN 100 - SERVERS
+VLAN 999 - UNUSED/NATIVE
+
+5. BRANCH OFFICE VLAN DESIGN
+
+VLAN 50  - SALES
+VLAN 60  - BRANCH-IT
+VLAN 99  - MANAGEMENT
+VLAN 999 - UNUSED/NATIVE
+
+6. ROUTING DESIGN
+
+OSPF Process ID: 10
+OSPF Area: 0
+
+OSPF will provide dynamic route exchange between:
+- HQ-R1
+- ISP-R1
+- BR-R1
+
+7. SECURITY DESIGN
+
+The network will implement:
+- VLAN-based segmentation
+- ACL-based access restrictions
+- NAT/PAT
+- Site-to-Site IPsec VPN
+- SSH device management
+- Secure passwords
+- Shutdown of unused switch ports
+- Dedicated management VLAN
+- Separate server VLAN
+
+8. REDUNDANCY
+
+Head Office switches will demonstrate:
+- STP for Layer-2 loop prevention
+- EtherChannel for link aggregation and redundancy
+
+9. SERVICES
+
+DHCP:
+- Automatic addressing for user VLANs
+
+DNS:
+- Internal and public name resolution
+
+HTTP:
+- Public server connectivity testing
+
+10. TESTING
+
+Testing will include:
+- Local VLAN connectivity
+- Inter-VLAN connectivity
+- HQ-to-Branch connectivity
+- DNS resolution
+- DHCP address allocation
+- OSPF neighbor verification
+- Routing table verification
+- NAT/PAT verification
+- ACL verification
+- STP verification
+- EtherChannel verification
+- VPN verification
+- Public-server connectivity
+- Ping
+- Traceroute
+- Nslookup
